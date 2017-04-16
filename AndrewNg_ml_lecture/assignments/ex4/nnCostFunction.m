@@ -73,7 +73,7 @@ for k = 1 : num_labels
 end;
 
 
-J = J + (sum(sum(Theta1(2:size(Theta1,1), 2:size(Theta1,2)).^2)) + sum(sum(Theta2(2:size(Theta2,1), 2:size(Theta2,2)).^2)))*lambda/(2*m);
+J = J + (sum(sum(Theta1(:, 2:size(Theta1,2)).^2)) + sum(sum(Theta2(:, 2:size(Theta2,2)).^2)))*lambda/(2*m);
 
 %J = J + lambda / (2 * m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
 
