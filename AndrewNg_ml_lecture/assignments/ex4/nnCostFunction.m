@@ -62,7 +62,9 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%compute cost function using forward propagation
 a1 = [ones(m, 1), X];
+z2 = a1*Theta1';
 a2 = [ones(m, 1), sigmoid(a1*Theta1')];
 hx = sigmoid(a2*Theta2');
 
@@ -73,11 +75,29 @@ for k = 1 : num_labels
 end;
 
 
+%regularization
 J = J + (sum(sum(Theta1(:, 2:size(Theta1,2)).^2)) + sum(sum(Theta2(:, 2:size(Theta2,2)).^2)))*lambda/(2*m);
 
-%J = J + lambda / (2 * m) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
+%compute delta3, delta2, theta1_grad, theta2_grad using backpropagation
+for t = 1 : m
+	for k = 1 : num_labels
+		predicted = (y(t)==k);
+		delta3(k,1) = hx(t, k) - predicted;
+	end;
 
+	delta2 = Theta2' * delta3 .* sigmoidGradient([1, z2(t, :)])';
+	delta2 = delta2(2:end);
 
+	Theta1_grad = Theta1_grad +  delta2 * a1(t, :);
+	Theta2_grad = Theta2_grad + delta3 * a2(t, :);
+end;
+
+Theta1_grad = Theta1_grad / m;
+Theta2_grad = Theta2_grad / m;
+
+%regularization
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + lambda / m * Theta1(:, 2:end);
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + lambda / m * Theta2(:, 2:end);
 
 % -------------------------------------------------------------
 
