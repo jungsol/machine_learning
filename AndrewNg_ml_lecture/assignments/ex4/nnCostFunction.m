@@ -69,7 +69,7 @@ hx = sigmoid(a2*Theta2');
 for k = 1 : num_labels
 	predicted = (y==k);
 	hx_k=hx(:,k);
-	J = -(sum(predicted.*log(hx_k)+(1-predicted).*log(1-hx_k)))/m;
+	J = J + -(sum(predicted.*log(hx_k)+(1-predicted).*log(1-hx_k)))/m;
 end;
 
 
